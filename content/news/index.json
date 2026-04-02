@@ -1,0 +1,47 @@
+[
+  {
+    "slug": "start-year-2025",
+    "date": "2025-09-01",
+    "category": "events",
+    "emoji": "🎒",
+    "title_ar": "انطلاق الموسم الدراسي 2025-2026",
+    "title_fr": "Rentrée scolaire 2025-2026",
+    "title_en": "Back to school 2025-2026",
+    "excerpt_ar": "استقبلت إعدادية النور تلاميذها الجدد والقدامى في أجواء احتفالية مميزة بمناسبة انطلاق الموسم الدراسي الجديد.",
+    "excerpt_fr": "Le Collège Al Nour a accueilli ses nouveaux et anciens élèves dans une atmosphère festive pour la rentrée scolaire.",
+    "excerpt_en": "Al Nour Middle School welcomed its new and returning students in a festive atmosphere for the start of the new school year.",
+    "content_ar": "content/news/start-year-2025.ar.md",
+    "content_fr": "content/news/start-year-2025.fr.md",
+    "content_en": "content/news/start-year-2025.en.md"
+  },
+  {
+    "slug": "science-fair-2025",
+    "date": "2025-11-15",
+    "category": "academic",
+    "emoji": "🔬",
+    "title_ar": "أسبوع العلوم — نتائج مبهرة",
+    "title_fr": "Semaine des sciences — Résultats remarquables",
+    "title_en": "Science week — Outstanding results",
+    "excerpt_ar": "حقق تلاميذ إعدادية النور نتائج متميزة في أسبوع العلوم الإقليمي، حيث فازوا بثلاث جوائز في تخصصات مختلفة.",
+    "excerpt_fr": "Les élèves du Collège Al Nour ont obtenu d'excellents résultats lors de la semaine régionale des sciences, remportant trois prix.",
+    "excerpt_en": "Al Nour students achieved outstanding results at the regional science week, winning three prizes in different disciplines.",
+    "content_ar": "content/news/science-fair-2025.ar.md",
+    "content_fr": "content/news/science-fair-2025.fr.md",
+    "content_en": "content/news/science-fair-2025.en.md"
+  },
+  {
+    "slug": "sports-day-2025",
+    "date": "2025-12-10",
+    "category": "sports",
+    "emoji": "⚽",
+    "title_ar": "اليوم الرياضي السنوي",
+    "title_fr": "Journée sportive annuelle",
+    "title_en": "Annual sports day",
+    "excerpt_ar": "نظّمت المدرسة يومها الرياضي السنوي بمشاركة واسعة من التلاميذ والأساتذة في مختلف الألعاب والمسابقات.",
+    "excerpt_fr": "L'établissement a organisé sa journée sportive annuelle avec une large participation d'élèves et d'enseignants.",
+    "excerpt_en": "The school organized its annual sports day with wide participation from students and teachers in various games and competitions.",
+    "content_ar": "content/news/sports-day-2025.ar.md",
+    "content_fr": "content/news/sports-day-2025.fr.md",
+    "content_en": "content/news/sports-day-2025.en.md"
+  }
+]

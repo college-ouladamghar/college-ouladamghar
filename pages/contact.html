@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>اتصل بنا | ثانوية ولاد أمغار</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body data-lang="ar">
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <span class="logo-ar">ثانوية ولاد أمغار</span>
+        <span class="logo-divider">|</span>
+        <span class="logo-fr">Al Nour</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../index.html" data-i18n="nav.home">الرئيسية</a></li>
+        <li><a href="about.html" data-i18n="nav.about">عن المدرسة</a></li>
+        <li><a href="gallery.html" data-i18n="nav.gallery">معرض الصور</a></li>
+        <li><a href="news.html" data-i18n="nav.news">الأخبار</a></li>
+        <li><a href="schedule.html" data-i18n="nav.schedule">التوقيت</a></li>
+        <li><a href="schedule.html" data-i18n="nav.schedule">التوقيت</a>
+          <a href="contact.html" data-i18n="nav.contact">اتصل بنا</a>
+        </li>
+      </ul>
+      <div class="nav-actions">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="ar">ع</button>
+          <button class="lang-btn" data-lang="fr">Fr</button>
+          <button class="lang-btn" data-lang="en">En</button>
+        </div>
+        <button class="burger" id="burger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-inner animate-in">
+        <span class="section-tag" data-i18n="contact.page.tag">التواصل</span>
+        <h1 data-i18n="contact.page.title">اتصل بنا</h1>
+        <p data-i18n="contact.page.subtitle">نسعد بالتواصل معكم</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- Info -->
+        <div class="contact-info reveal">
+          <h3 data-i18n="contact.page.subtitle">نسعد بالتواصل معكم</h3>
+
+          <div class="contact-detail">
+            <div class="contact-icon">📍</div>
+            <div>
+              <p class="contact-label" data-i18n="contact.address.label">العنوان</p>
+              <p class="contact-value" data-i18n="contact.address.value">أولاد أمغار، تمسمان، إقليم الدريوش، المغرب</p>
+            </div>
+          </div>
+
+          <div class="contact-detail">
+            <div class="contact-icon">📞</div>
+            <div>
+              <p class="contact-label" data-i18n="contact.phone.label">الهاتف</p>
+              <p class="contact-value" dir="ltr">+212 5XX-XXXXXX</p>
+            </div>
+          </div>
+
+          <div class="contact-detail">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <p class="contact-label" data-i18n="contact.email.label">البريد الإلكتروني</p>
+              <p class="contact-value" dir="ltr">contact@alnour-school.ma</p>
+            </div>
+          </div>
+
+          <div class="contact-detail">
+            <div class="contact-icon">🕐</div>
+            <div>
+              <p class="contact-label" data-i18n="contact.hours.label">أوقات العمل</p>
+              <p class="contact-value" data-i18n="contact.hours.value">الاثنين–الجمعة: 8:00 – 17:00</p>
+            </div>
+          </div>
+
+          <!-- Social placeholders -->
+          <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap;">
+            <a href="#"
+              style="padding:.5rem 1rem;border-radius:100px;border:1.5px solid var(--c-border);font-family:var(--f-ui);font-size:.82rem;color:var(--c-muted);transition:all .2s;"
+              onmouseover="this.style.borderColor='var(--c-accent)';this.style.color='var(--c-accent)'"
+              onmouseout="this.style.borderColor='var(--c-border)';this.style.color='var(--c-muted)'">Facebook</a>
+            <a href="#"
+              style="padding:.5rem 1rem;border-radius:100px;border:1.5px solid var(--c-border);font-family:var(--f-ui);font-size:.82rem;color:var(--c-muted);transition:all .2s;"
+              onmouseover="this.style.borderColor='var(--c-accent)';this.style.color='var(--c-accent)'"
+              onmouseout="this.style.borderColor='var(--c-border)';this.style.color='var(--c-muted)'">Instagram</a>
+            <a href="#"
+              style="padding:.5rem 1rem;border-radius:100px;border:1.5px solid var(--c-border);font-family:var(--f-ui);font-size:.82rem;color:var(--c-muted);transition:all .2s;"
+              onmouseover="this.style.borderColor='var(--c-accent)';this.style.color='var(--c-accent)'"
+              onmouseout="this.style.borderColor='var(--c-border)';this.style.color='var(--c-muted)'">YouTube</a>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="contact-form reveal delay-1">
+          <h3 data-i18n="contact.form.title" style="margin-bottom:1.5rem;">أرسل لنا رسالة</h3>
+          <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <!-- Replace YOUR_FORM_ID with your Formspree form ID for live form submissions -->
+            <input type="hidden" name="_subject" value="رسالة من موقع ثانوية ولاد أمغار" />
+
+            <div class="form-group">
+              <label data-i18n="contact.form.name">الاسم الكامل</label>
+              <input type="text" name="name" required placeholder="محمد العلوي" />
+            </div>
+            <div class="form-group">
+              <label data-i18n="contact.form.email">البريد الإلكتروني</label>
+              <input type="email" name="email" required placeholder="email@exemple.ma" dir="ltr" />
+            </div>
+            <div class="form-group">
+              <label data-i18n="contact.form.subject">الموضوع</label>
+              <select name="subject">
+                <option value="inscription">التسجيل والالتحاق</option>
+                <option value="info">استفسار عام</option>
+                <option value="complaint">شكوى أو ملاحظة</option>
+                <option value="partnership">شراكة</option>
+                <option value="other">أخرى</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="contact.form.message">الرسالة</label>
+              <textarea name="message" required placeholder="اكتب رسالتك هنا…"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;"
+              data-i18n="contact.form.send">
+              إرسال الرسالة
+            </button>
+          </form>
+          <div id="formSuccess" class="form-success">
+            <div class="check">✅</div>
+            <p data-i18n="contact.form.success">تم الإرسال! سنتواصل معك قريباً.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map Section -->
+      <div class="map-container reveal" style="margin-top:4rem; height: 450px; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--c-border);">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3264.40871!2d-3.6876757!3d35.2746323!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd7683bc2935715b%3A0x48212185aff39980!2sLyc%C3%A9e%20Qualifiant%20Oulad%20Amghar!5e0!3m2!1sen!2sma!4v1711846200000!5m2!1sen!2sma" 
+          width="100%" 
+          height="100%" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <p class="footer-logo">ثانوية ولاد أمغار</p>
+        <p class="footer-tagline" data-i18n="footer.tagline">نور العلم يضيء الطريق</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html" data-i18n="nav.home">الرئيسية</a>
+        <a href="about.html" data-i18n="nav.about">عن المدرسة</a>
+        <a href="gallery.html" data-i18n="nav.gallery">معرض الصور</a>
+        <a href="news.html" data-i18n="nav.news">الأخبار</a>
+        <a href="schedule.html" data-i18n="nav.schedule">التوقيت</a>
+        <a href="contact.html" data-i18n="nav.contact">اتصل بنا</a>
+      </div>
+      <p class="footer-copy">© 2025 ثانوية ولاد أمغار — المغرب</p>
+    </div>
+  </footer>
+
+  <script src="../js/i18n.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ثانوية ولاد أمغار | Collège Al Nour | Al Nour Middle School</title>
+  <meta name="description" content="ثانوية ولاد أمغار التأهيلية" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body class="page-home" data-lang="ar">
+
+  <a href="#main-content" class="skip-link">انتقل إلى المحتوى</a>
+
+  <!-- ANNOUNCEMENT BAR — edit text here to show school announcements -->
+  <div class="announcement-bar" id="announcementBar">
+    <span>📢 </span>
+    <span data-i18n="announcement.text">التسجيلات للموسم الدراسي 2025-2026 مفتوحة الآن — </span>
+    <a href="pages/contact.html" data-i18n="announcement.link">تواصل معنا</a>
+    <button class="close-bar" onclick="dismissBar()" aria-label="إغلاق">✕</button>
+  </div>
+  <script>
+    function dismissBar() {
+      var b = document.getElementById('announcementBar');
+      if (b) { b.style.display = 'none'; document.body.style.setProperty('--bar-h', '0px'); }
+    }
+    // Set CSS var once bar is rendered so navbar knows how far down to sit
+    document.addEventListener('DOMContentLoaded', function () {
+      var b = document.getElementById('announcementBar');
+      if (b) document.body.style.setProperty('--bar-h', b.offsetHeight + 'px');
+    });
+    setTimeout(dismissBar, 6000);
+  </script>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-ar">ثانوية ولاد أمغار</span>
+        <span class="logo-divider">|</span>
+        <span class="logo-fr">Oulad Amghar</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" data-i18n="nav.home">الرئيسية</a></li>
+        <li><a href="pages/about.html" data-i18n="nav.about">عن المدرسة</a></li>
+        <li><a href="pages/gallery.html" data-i18n="nav.gallery">معرض الصور</a></li>
+        <li><a href="pages/news.html" data-i18n="nav.news">الأخبار</a></li>
+        <li><a href="pages/schedule.html" data-i18n="nav.schedule">التوقيت</a></li>
+        <li><a href="pages/contact.html" data-i18n="nav.contact">اتصل بنا</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="ar">ع</button>
+          <button class="lang-btn" data-lang="fr">Fr</button>
+          <button class="lang-btn" data-lang="en">En</button>
+        </div>
+        <button class="burger" id="burger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-bg">
+      <div class="hero-shape s1"></div>
+      <div class="hero-shape s2"></div>
+      <div class="hero-shape s3"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow animate-in" data-i18n="hero.eyebrow">مرحباً بكم في</p>
+      <h1 class="hero-title animate-in delay-1">
+        <span data-i18n="hero.title1">ثانوية</span>
+        <em data-i18n="hero.title2">ولاد أمغار</em>
+      </h1>
+      <p class="hero-subtitle animate-in delay-2" data-i18n="hero.subtitle">
+        نحو مستقبل مشرق — منارة العلم والتربية في المغرب
+      </p>
+      <div class="hero-cta animate-in delay-3">
+        <a href="pages/about.html" class="btn btn-primary" data-i18n="hero.cta1">اكتشف مدرستنا</a>
+        <a href="pages/news.html" class="btn btn-ghost" data-i18n="hero.cta2">آخر الأخبار</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span></span>
+    </div>
+  </header>
+
+  <!-- STATS BAND -->
+  <section class="stats-band">
+    <div class="stat animate-stat">
+      <span class="stat-num" data-target="650">0</span>
+      <span class="stat-label" data-i18n="stats.students">تلميذ</span>
+    </div>
+    <div class="stat animate-stat">
+      <span class="stat-num" data-target="42">0</span>
+      <span class="stat-label" data-i18n="stats.teachers">أستاذ</span>
+    </div>
+    <div class="stat animate-stat">
+      <span class="stat-num" data-target="18">0</span>
+      <span class="stat-label" data-i18n="stats.classes">قسم</span>
+    </div>
+    <div class="stat animate-stat">
+      <span class="stat-num" data-target="2015">0</span>
+      <span class="stat-label" data-i18n="stats.founded">سنة التأسيس</span>
+    </div>
+  </section>
+
+  <!-- ABOUT TEASER -->
+  <section class="section about-teaser">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <span class="section-tag" data-i18n="about.tag">عن المدرسة</span>
+          <h2 data-i18n="about.title">بيئة تعليمية<br />متميزة</h2>
+          <p data-i18n="about.desc">
+            ثانوية ولاد أمغار مؤسسة تعليمية عمومية تسعى إلى تكوين أجيال قادرة على مواجهة تحديات العصر،
+            في إطار يجمع بين التميز الأكاديمي والقيم الإنسانية الأصيلة.
+          </p>
+          <a href="pages/about.html" class="link-arrow" data-i18n="about.link">اقرأ المزيد</a>
+        </div>
+        <div class="about-visual reveal delay-1">
+          <div class="visual-card vc1">
+            <div class="vc-icon">📚</div>
+            <h3 data-i18n="about.card1.title">التميز الأكاديمي</h3>
+            <p data-i18n="about.card1.desc">برامج تعليمية مطابقة للمناهج الوطنية</p>
+          </div>
+          <div class="visual-card vc2">
+            <div class="vc-icon">🏅</div>
+            <h3 data-i18n="about.card2.title">الأنشطة التربوية</h3>
+            <p data-i18n="about.card2.desc">رياضة، فنون، ومسابقات علمية</p>
+          </div>
+          <div class="visual-card vc3">
+            <div class="vc-icon">🤝</div>
+            <h3 data-i18n="about.card3.title">الانفتاح والشراكة</h3>
+            <p data-i18n="about.card3.desc">علاقات تربوية متينة مع الأسر والمجتمع</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWS TEASER -->
+  <section class="section news-teaser">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag" data-i18n="news.tag">الأخبار</span>
+        <h2 data-i18n="news.title">آخر المستجدات</h2>
+        <a href="pages/news.html" class="link-arrow" data-i18n="news.all">جميع الأخبار</a>
+      </div>
+      <div class="news-grid" id="newsGrid">
+        <!-- Injected by JS from markdown files -->
+        <div class="news-loading">جارٍ التحميل…</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY TEASER -->
+  <section class="section gallery-teaser">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag" data-i18n="gallery.tag">معرض الصور</span>
+        <h2 data-i18n="gallery.title">لحظات من حياتنا</h2>
+        <a href="pages/gallery.html" class="link-arrow" data-i18n="gallery.all">المزيد</a>
+      </div>
+      <div class="reveal" id="galleryMosaic">
+        <!-- Filled by gallery-loader.js from content/gallery/index.json (featured tag) -->
+        <div class="gallery-placeholder-grid">
+          <div class="gp gp1"></div>
+          <div class="gp gp2"></div>
+          <div class="gp gp3"></div>
+          <div class="gp gp4"></div>
+          <div class="gp gp5"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT CTA -->
+  <section class="section cta-band reveal">
+    <div class="container">
+      <h2 data-i18n="cta.title">هل تريد التواصل معنا؟</h2>
+      <p data-i18n="cta.desc">فريق الإدارة في خدمتكم دائماً</p>
+      <a href="pages/contact.html" class="btn btn-primary" data-i18n="cta.btn">تواصل معنا</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <p class="footer-logo">ثانوية ولاد أمغار</p>
+        <p class="footer-tagline" data-i18n="footer.tagline">نور العلم يضيء الطريق</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" data-i18n="nav.home">الرئيسية</a>
+        <a href="pages/about.html" data-i18n="nav.about">عن المدرسة</a>
+        <a href="pages/gallery.html" data-i18n="nav.gallery">معرض الصور</a>
+        <a href="pages/news.html" data-i18n="nav.news">الأخبار</a>
+        <a href="pages/schedule.html" data-i18n="nav.schedule">التوقيت</a>
+        <a href="pages/contact.html" data-i18n="nav.contact">اتصل بنا</a>
+      </div>
+      <p class="footer-copy">© 2025 ثانوية ولاد أمغار — المغرب</p>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/news-loader.js"></script>
+  <script src="js/gallery-loader.js"></script>
+</body>
+
+</html>

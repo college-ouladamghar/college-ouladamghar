@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>التوقيت المدرسي | ثانوية ولاد أمغار</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── STEPS ── */
+    .sched-step { display: none; }
+    .sched-step.active { display: block; animation: fadeUp .3s ease forwards; }
+
+    /* ── BREADCRUMB ── */
+    .sched-bc { display: flex; align-items: center; gap: .4rem; font-family: var(--f-ui); font-size: .82rem; color: var(--c-muted); margin-bottom: 2rem; flex-wrap: wrap; }
+    .sched-bc .bc-btn { background: none; border: none; color: var(--c-accent); font-family: var(--f-ui); font-size: .82rem; cursor: pointer; padding: 0; text-decoration: underline; }
+    .sched-bc .bc-sep { opacity: .35; }
+    .sched-bc .bc-cur { color: var(--c-text); font-weight: 600; }
+
+    /* ── LEVEL CARDS ── */
+    .level-group { margin-bottom: 2.5rem; }
+    .level-group-label { font-family: var(--f-ui); font-size: .7rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 1rem; }
+    .level-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1rem; }
+    .level-card { background: var(--c-surface); border: 1.5px solid var(--c-border); border-radius: var(--r-md); padding: 1.5rem; cursor: pointer; transition: all .22s var(--ease); display: flex; flex-direction: column; gap: .4rem; }
+    .level-card:hover { border-color: var(--c-accent); transform: translateY(-3px); box-shadow: var(--sh-md); }
+    .level-card-icon { font-size: 1.9rem; }
+    .level-card-name { font-weight: 700; font-size: 1rem; }
+    .level-card-sub { font-family: var(--f-ui); font-size: .75rem; color: var(--c-muted); }
+    .level-card-badge { font-family: var(--f-ui); font-size: .72rem; color: var(--c-accent); font-weight: 500; margin-top: .25rem; }
+
+    /* ── CLASS CARDS ── */
+    .class-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+    .class-card { background: var(--c-surface); border: 1.5px solid var(--c-border); border-radius: var(--r-md); padding: 2rem 1rem; cursor: pointer; transition: all .22s var(--ease); text-align: center; display: flex; flex-direction: column; align-items: center; gap: .4rem; }
+    .class-card:hover { border-color: var(--c-accent); background: var(--c-accent-light); transform: translateY(-3px); box-shadow: var(--sh-md); }
+    .class-card-num { font-size: 2.8rem; font-weight: 800; color: var(--c-accent); font-family: var(--f-latin); line-height: 1; }
+    .class-card-label { font-family: var(--f-ui); font-size: .8rem; color: var(--c-muted); }
+
+    /* ── CAL TOOLBAR ── */
+    .cal-toolbar { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .cal-toolbar-title { flex: 1; font-weight: 700; font-size: 1.05rem; text-align: center; }
+
+    /* ── WEEK CALENDAR ── */
+    .week-cal { border: 1px solid var(--c-border); border-radius: var(--r-md); overflow: hidden; }
+
+    /* Header row */
+    .week-cal-header { display: grid; grid-template-columns: 64px repeat(6, 1fr); background: var(--c-accent); }
+    .cal-hcorner {}
+    .cal-hday { color: #fff; text-align: center; padding: .8rem .25rem; font-family: var(--f-ui); font-size: .78rem; font-weight: 600; border-inline-start: 1px solid rgba(255,255,255,.15); display: flex; flex-direction: column; align-items: center; gap: .15rem; }
+    .cal-hday .hd-main { font-size: .8rem; }
+    .cal-hday .hd-sub { font-size: .65rem; opacity: .75; }
+
+    /* Grid: time col + 6 days, rows = p1-p4 / lunch / p5-p8 */
+    .week-cal-body {
+      display: grid;
+      grid-template-columns: 64px repeat(6, 1fr);
+      grid-template-rows:
+        minmax(90px, auto)   /* p1  08:30–09:30 */
+        minmax(90px, auto)   /* p2  09:30–10:30 */
+        minmax(90px, auto)   /* p3  10:30–11:30 */
+        minmax(90px, auto)   /* p4  11:30–12:30 */
+        44px                 /* lunch 12:30–14:30 */
+        minmax(90px, auto)   /* p5  14:30–15:30 */
+        minmax(90px, auto)   /* p6  15:30–16:30 */
+        minmax(90px, auto)   /* p7  16:30–17:30 */
+        minmax(90px, auto);  /* p8  17:30–18:30 */
+    }
+
+    /* Time column cells (6 cells: one per row, spanning col 1) */
+    .cal-time { grid-column: 1; border-inline-end: 1px solid var(--c-border); border-top: 1px solid var(--c-border); display: flex; align-items: flex-start; padding: .45rem .3rem; font-family: var(--f-ui); font-size: .68rem; color: var(--c-muted); font-weight: 500; background: var(--c-surface); }
+    .cal-time.break-time { background: #FDF8EE; border-top: 1px dashed var(--c-border); font-size: .64rem; color: var(--c-accent2); }
+    .cal-time.lunch-time { background: #F9FAFB; border-top: 1px dashed var(--c-border); font-size: .64rem; color: var(--c-muted); }
+
+    /* Subject cells */
+    .cal-cell { border-top: 1px solid var(--c-border); border-inline-start: 1px solid var(--c-border); padding: .45rem; background: var(--c-surface); }
+    .cal-cell.break-cell { background: #FDF8EE; border-top: 1px dashed var(--c-border); display: flex; align-items: center; justify-content: center; font-family: var(--f-ui); font-size: .68rem; color: var(--c-accent2); font-weight: 500; letter-spacing: .05em; text-transform: uppercase; }
+    .cal-cell.lunch-cell { background: #F9FAFB; border-top: 1px dashed var(--c-border); display: flex; align-items: center; justify-content: center; font-family: var(--f-ui); font-size: .68rem; color: var(--c-muted); letter-spacing: .04em; }
+
+    /* Event card inside a cell */
+    .cal-event { height: 100%; border-radius: 8px; padding: .55rem .7rem; display: flex; flex-direction: column; gap: .2rem; border-inline-start: 3px solid; }
+    .cal-event-subj { font-weight: 600; font-size: .8rem; display: flex; align-items: center; gap: .3rem; }
+    .cal-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .cal-event-teacher { font-family: var(--f-ui); font-size: .7rem; opacity: .7; margin-top: auto; }
+
+    /* Free / prayer label */
+    .cal-free { height: 100%; display: flex; align-items: center; justify-content: center; font-family: var(--f-ui); font-size: .75rem; color: var(--c-muted); font-style: italic; opacity: .7; }
+
+    /* WIP placeholder */
+    .cal-wip { text-align: center; padding: 5rem 2rem; background: var(--c-surface); border-radius: var(--r-md); border: 1.5px dashed var(--c-border); }
+    .cal-wip p { font-family: var(--f-ui); font-size: .9rem; color: var(--c-muted); margin-top: .75rem; }
+
+    /* ── DATES SECTION (always visible) ── */
+    .dates-section { margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--c-border); }
+
+    /* ── PRINT ── */
+    @media print {
+      .navbar, .announcement-bar, .skip-link, .page-hero,
+      .sched-bc, .cal-toolbar .btn, .dates-section, footer,
+      #levelStep, #classStep { display: none !important; }
+      #calStep { display: block !important; }
+      .section { padding-block: .5rem; }
+      .week-cal { border: 1px solid #999; }
+      .cal-cell, .cal-time { border-color: #ccc; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 760px) {
+      .week-cal-header, .week-cal-body { grid-template-columns: 48px repeat(6, 1fr); font-size: .7rem; }
+      .cal-hday .hd-sub { display: none; }
+      .cal-event-teacher { display: none; }
+      .cal-event { padding: .35rem .4rem; }
+    }
+  </style>
+</head>
+<body data-lang="ar">
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <span class="logo-ar">ثانوية ولاد أمغار</span>
+        <span class="logo-divider">|</span>
+        <span class="logo-fr">Al Nour</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../index.html" data-i18n="nav.home">الرئيسية</a></li>
+        <li><a href="about.html"    data-i18n="nav.about">عن المدرسة</a></li>
+        <li><a href="gallery.html"  data-i18n="nav.gallery">معرض الصور</a></li>
+        <li><a href="news.html"     data-i18n="nav.news">الأخبار</a></li>
+        <li><a href="schedule.html" data-i18n="nav.schedule">التوقيت</a></li>
+        <li><a href="contact.html"  data-i18n="nav.contact">اتصل بنا</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="ar">ع</button>
+          <button class="lang-btn" data-lang="fr">Fr</button>
+          <button class="lang-btn" data-lang="en">En</button>
+        </div>
+        <button class="burger" id="burger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-inner animate-in">
+        <span class="section-tag" data-i18n="schedule.tag">التوقيت المدرسي</span>
+        <h1 data-i18n="schedule.title">التوقيت الأسبوعي</h1>
+        <p data-i18n="schedule.subtitle">الخطاطة الزمنية العامة للدراسة بالمؤسسة</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE APP -->
+  <section class="section" style="background:var(--c-bg);">
+    <div class="container">
+
+      <!-- ═══ STEP 1 — Level ═══ -->
+      <div id="levelStep" class="sched-step active">
+        <div class="section-header" style="margin-bottom:2rem">
+          <span class="section-tag" data-i18n="schedule.tag">التوقيت</span>
+          <h2 id="chooseLevelTitle">اختر مستواك الدراسي</h2>
+        </div>
+
+        <!-- Collège -->
+        <div class="level-group">
+          <p class="level-group-label" id="collegeLbl">التعليم الإعدادي</p>
+          <div class="level-cards">
+            <div class="level-card reveal" onclick="selectLevel('s1')">
+              <div class="level-card-icon">📗</div>
+              <div class="level-card-name" data-i18n="schedule.level.s1">السنة الأولى</div>
+              <div class="level-card-sub">7ème · Grade 7</div>
+              <div class="level-card-badge" id="s1-badge">4 أقسام</div>
+            </div>
+            <div class="level-card reveal delay-1" onclick="selectLevel('s2')">
+              <div class="level-card-icon">📘</div>
+              <div class="level-card-name" data-i18n="schedule.level.s2">السنة الثانية</div>
+              <div class="level-card-sub">8ème · Grade 8</div>
+              <div class="level-card-badge" id="s2-badge">4 أقسام</div>
+            </div>
+            <div class="level-card reveal" onclick="selectLevel('s3')">
+              <div class="level-card-icon">📙</div>
+              <div class="level-card-name" data-i18n="schedule.level.s3">السنة الثالثة</div>
+              <div class="level-card-sub">9ème · Grade 9</div>
+              <div class="level-card-badge" id="s3-badge">3 أقسام</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lycée -->
+        <div class="level-group">
+          <p class="level-group-label" id="lyceeLbl">التعليم الثانوي التأهيلي</p>
+          <div class="level-cards">
+            <div class="level-card reveal" onclick="selectLevel('tc')">
+              <div class="level-card-icon">🎓</div>
+              <div class="level-card-name" data-i18n="schedule.level.tc">الجذع المشترك</div>
+              <div class="level-card-sub">Tronc Commun · 10th</div>
+              <div class="level-card-badge" id="tc-badge">3 أقسام</div>
+            </div>
+            <div class="level-card reveal delay-1" onclick="selectLevel('s1bac')">
+              <div class="level-card-icon">📐</div>
+              <div class="level-card-name" data-i18n="schedule.level.s1bac">السنة الأولى بكالوريا</div>
+              <div class="level-card-sub">1ère Bac · 11th</div>
+              <div class="level-card-badge" id="s1bac-badge">2 أقسام</div>
+            </div>
+            <div class="level-card reveal" onclick="selectLevel('s2bac')">
+              <div class="level-card-icon">🏆</div>
+              <div class="level-card-name" data-i18n="schedule.level.s2bac">السنة الثانية بكالوريا</div>
+              <div class="level-card-sub">2ème Bac · 12th</div>
+              <div class="level-card-badge" id="s2bac-badge">2 أقسام</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 2 — Class ═══ -->
+      <div id="classStep" class="sched-step">
+        <div class="sched-bc" id="bc2">
+          <button class="bc-btn" onclick="goToLevels()" id="bc2-lbl">المستويات</button>
+          <span class="bc-sep">›</span>
+          <span class="bc-cur" id="bc2-level"></span>
+        </div>
+        <div class="section-header" style="margin-bottom:2rem">
+          <h2 id="chooseClassTitle">اختر القسم</h2>
+        </div>
+        <div class="class-cards" id="classCards"></div>
+      </div>
+
+      <!-- ═══ STEP 3 — Calendar ═══ -->
+      <div id="calStep" class="sched-step">
+        <div class="sched-bc" id="bc3">
+          <button class="bc-btn" onclick="goToLevels()" id="bc3-levels">المستويات</button>
+          <span class="bc-sep">›</span>
+          <button class="bc-btn" onclick="goToClasses()" id="bc3-level"></button>
+          <span class="bc-sep">›</span>
+          <span class="bc-cur" id="bc3-class"></span>
+        </div>
+        <div class="cal-toolbar">
+          <button class="btn btn-ghost" onclick="goToClasses()" style="padding:.45rem 1rem;font-size:.82rem;" id="backClassBtn">← الأقسام</button>
+          <span class="cal-toolbar-title" id="calTitle"></span>
+          <button class="btn btn-ghost" onclick="printSchedule()" style="padding:.45rem 1.1rem;font-size:.82rem;">🖨️ <span data-i18n="schedule.print">طباعة</span></button>
+        </div>
+        <div id="calContainer"></div>
+      </div>
+
+      <!-- ═══ IMPORTANT DATES (always visible) ═══ -->
+      <div class="dates-section" id="datesSection">
+        <div class="section-header reveal">
+          <span class="section-tag" data-i18n="schedule.dates.tag">التقويم</span>
+          <h2 data-i18n="schedule.dates.title">التواريخ المهمة</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;">
+          <div class="value-card reveal" style="display:flex;gap:1rem;align-items:flex-start;padding:1.25rem 1.5rem;">
+            <span style="font-size:1.5rem;flex-shrink:0;">📅</span>
+            <div>
+              <p style="font-family:var(--f-ui);font-size:.75rem;color:var(--c-accent2);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.25rem" data-i18n="schedule.dates.term1">الدورة الأولى</p>
+              <p style="font-weight:600;font-size:.95rem" data-i18n="schedule.dates.term1.range">3 سبتمبر — 22 ديسمبر 2025</p>
+            </div>
+          </div>
+          <div class="value-card reveal delay-1" style="display:flex;gap:1rem;align-items:flex-start;padding:1.25rem 1.5rem;">
+            <span style="font-size:1.5rem;flex-shrink:0;">📅</span>
+            <div>
+              <p style="font-family:var(--f-ui);font-size:.75rem;color:var(--c-accent2);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.25rem" data-i18n="schedule.dates.term2">الدورة الثانية</p>
+              <p style="font-weight:600;font-size:.95rem" data-i18n="schedule.dates.term2.range">12 يناير — 3 أبريل 2026</p>
+            </div>
+          </div>
+          <div class="value-card reveal" style="display:flex;gap:1rem;align-items:flex-start;padding:1.25rem 1.5rem;">
+            <span style="font-size:1.5rem;flex-shrink:0;">📅</span>
+            <div>
+              <p style="font-family:var(--f-ui);font-size:.75rem;color:var(--c-accent2);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.25rem" data-i18n="schedule.dates.term3">الدورة الثالثة</p>
+              <p style="font-weight:600;font-size:.95rem" data-i18n="schedule.dates.term3.range">20 أبريل — 12 يونيو 2026</p>
+            </div>
+          </div>
+          <div class="value-card reveal delay-1" style="display:flex;gap:1rem;align-items:flex-start;padding:1.25rem 1.5rem;">
+            <span style="font-size:1.5rem;flex-shrink:0;">🏖️</span>
+            <div>
+              <p style="font-family:var(--f-ui);font-size:.75rem;color:var(--c-accent2);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.25rem" data-i18n="schedule.dates.holidays">العطل المدرسية</p>
+              <p style="font-weight:600;font-size:.95rem" data-i18n="schedule.dates.holidays.note">وفق الروزنامة الرسمية للوزارة</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <p class="footer-logo">ثانوية ولاد أمغار</p>
+        <p class="footer-tagline" data-i18n="footer.tagline">نور العلم يضيء الطريق</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html" data-i18n="nav.home">الرئيسية</a>
+        <a href="about.html"    data-i18n="nav.about">عن المدرسة</a>
+        <a href="gallery.html"  data-i18n="nav.gallery">معرض الصور</a>
+        <a href="news.html"     data-i18n="nav.news">الأخبار</a>
+        <a href="schedule.html" data-i18n="nav.schedule">التوقيت</a>
+        <a href="contact.html"  data-i18n="nav.contact">اتصل بنا</a>
+      </div>
+      <p class="footer-copy">© 2025 ثانوية ولاد أمغار — المغرب</p>
+    </div>
+  </footer>
+
+  <script src="../js/i18n.js"></script>
+  <script src="../js/schedule-data.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+  // Subject colour palette (keyed by subject code)
+  const SUBJ = {
+    arabic:  { key: 'schedule.subject.arabic',  color: '#3B82F6', bg: '#EBF3FB' },
+    french:  { key: 'schedule.subject.french',  color: '#10B981', bg: '#ECFDF5' },
+    math:    { key: 'schedule.subject.math',     color: '#F59E0B', bg: '#FFFBEB' },
+    science: { key: 'schedule.subject.science',  color: '#8B5CF6', bg: '#F3F4F6' },
+    islamic: { key: 'schedule.subject.islamic',  color: '#EF4444', bg: '#FEF2F2' },
+    pe:      { key: 'schedule.subject.pe',       color: '#6B7280', bg: '#F9FAFB' },
+    physics: { key: 'schedule.subject.physics',  color: '#7C3AED', bg: '#EDE9FE' },
+    art:     { key: 'schedule.subject.art',      color: '#EC4899', bg: '#FDF2F8' },
+    english: { key: 'schedule.subject.english',  color: '#0EA5E9', bg: '#E0F2FE' },
+    history: { key: 'schedule.subject.history',  color: '#F97316', bg: '#FFF7ED' },
+  };
+
+  // Day order (col index 0-5 = Mon-Sat)
+  const DAYS = ['monday','tuesday','wednesday','thursday','friday','saturday'];
+
+  // ══════════════════════════════════════════════
+  //  STATE
+  // ══════════════════════════════════════════════
+  let curLevel = null, curClass = null;
+
+  // ══════════════════════════════════════════════
+  //  NAVIGATION
+  // ══════════════════════════════════════════════
+  function showStep(id) {
+    ['levelStep','classStep','calStep'].forEach(s => {
+      const el = document.getElementById(s);
+      el.classList.remove('active');
+    });
+    document.getElementById(id).classList.add('active');
+    const ds = document.getElementById('datesSection');
+    if (ds) ds.style.display = id === 'calStep' ? 'none' : '';
+  }
+
+  function t(key) { return window.i18n ? window.i18n.t(key) : key; }
+
+  // Shortcut to window.scheduleData.levels
+  function lvlData(id) { return window.scheduleData.levels[id]; }
+
+  function selectLevel(levelId) {
+    curLevel = levelId;
+    const lvl = lvlData(levelId);
+    // Breadcrumb
+    document.getElementById('bc2-lbl').textContent   = t('schedule.back.levels');
+    document.getElementById('bc2-level').textContent = t(lvl.nameKey);
+    document.getElementById('chooseClassTitle').textContent = t('schedule.choose.class');
+    // Build class cards
+    const grid = document.getElementById('classCards');
+    grid.innerHTML = '';
+    for (let i = 1; i <= lvl.classes; i++) {
+      const c = document.createElement('div');
+      c.className = 'class-card';
+      c.innerHTML = `<div class="class-card-num">${i}</div><div class="class-card-label">${t('schedule.class.label')} ${i}</div>`;
+      c.onclick = () => selectClass(i);
+      grid.appendChild(c);
+    }
+    showStep('classStep');
+  }
+
+  function selectClass(classNum) {
+    curClass = classNum;
+    const lvl = lvlData(curLevel);
+    const classKey = 'c' + classNum;
+    const classLabel = t('schedule.class.label') + ' ' + classNum;
+    const levelName  = t(lvl.nameKey);
+    // Breadcrumb
+    document.getElementById('bc3-levels').textContent = t('schedule.back.levels');
+    document.getElementById('bc3-level').textContent  = levelName;
+    document.getElementById('bc3-class').textContent  = classLabel;
+    document.getElementById('calTitle').textContent   = levelName + ' — ' + classLabel;
+    document.getElementById('backClassBtn').textContent = '← ' + t('schedule.back.classes');
+    // Render
+    const sched = lvlData(curLevel).data['c' + classNum];
+    renderCalendar(sched);
+    showStep('calStep');
+  }
+
+  function goToLevels() { curLevel = null; curClass = null; showStep('levelStep'); }
+  function goToClasses() { if (curLevel) selectLevel(curLevel); }
+
+  // ══════════════════════════════════════════════
+  //  CALENDAR RENDERER
+  // ══════════════════════════════════════════════
+  const TIMES = [
+    { label:'08:30 – 09:30', slot:'p1', type:'period' },
+    { label:'09:30 – 10:30', slot:'p2', type:'period' },
+    { label:'10:30 – 11:30', slot:'p3', type:'period' },
+    { label:'11:30 – 12:30', slot:'p4', type:'period' },
+    { label:'12:30 – 14:30', slot:'lnc', type:'lunch' },
+    { label:'14:30 – 15:30', slot:'p5', type:'period' },
+    { label:'15:30 – 16:30', slot:'p6', type:'period' },
+    { label:'16:30 – 17:30', slot:'p7', type:'period' },
+    { label:'17:30 – 18:30', slot:'p8', type:'period' },
+  ];
+  const AFTERNOON = new Set(['p5','p6','p7','p8']);
+
+  const DAY_NAMES = {
+    monday:    { main: t('schedule.day.monday'),    sub:'Lun' },
+    tuesday:   { main: t('schedule.day.tuesday'),   sub:'Mar' },
+    wednesday: { main: t('schedule.day.wednesday'), sub:'Mer' },
+    thursday:  { main: t('schedule.day.thursday'),  sub:'Jeu' },
+    friday:    { main: t('schedule.day.friday'),    sub:'Ven' },
+    saturday:  { main: t('schedule.day.saturday'),  sub:'Sam' },
+  };
+
+  function renderCalendar(sched) {
+    const container = document.getElementById('calContainer');
+    if (!sched) {
+      container.innerHTML = `<div class="cal-wip"><p style="font-size:2rem">🚧</p><p>${t('schedule.nodata.class')}</p></div>`;
+      return;
+    }
+
+    // Re-read day names with current language
+    DAYS.forEach(d => {
+      DAY_NAMES[d] = { main: t('schedule.day.' + d), sub: DAY_NAMES[d].sub };
+    });
+
+    let html = `<div class="week-cal">`;
+
+    // ── Header ──
+    html += `<div class="week-cal-header"><div class="cal-hcorner"></div>`;
+    DAYS.forEach(d => {
+      html += `<div class="cal-hday"><span class="hd-main">${DAY_NAMES[d].main}</span><span class="hd-sub">${DAY_NAMES[d].sub}</span></div>`;
+    });
+    html += `</div>`; // end header
+
+    // ── Body ──
+    html += `<div class="week-cal-body">`;
+
+    TIMES.forEach(row => {
+      // Time label
+      if (row.type === 'break') {
+        html += `<div class="cal-time break-time">${row.label}</div>`;
+        DAYS.forEach(() => { html += `<div class="cal-cell break-cell">${t('schedule.break.short')}</div>`; });
+      } else if (row.type === 'lunch') {
+        html += `<div class="cal-time lunch-time">${row.label}</div>`;
+        DAYS.forEach(() => { html += `<div class="cal-cell lunch-cell">${t('schedule.break.lunch')}</div>`; });
+      } else {
+        // Period row
+        html += `<div class="cal-time">${row.label}</div>`;
+        DAYS.forEach(day => {
+          const dayData = sched[day] || {};
+          const entry   = dayData[row.slot];
+          html += `<div class="cal-cell">${buildEvent(entry, row.slot)}</div>`;
+        });
+      }
+    });
+
+    html += `</div></div>`; // end body + week-cal
+    container.innerHTML = html;
+  }
+
+  function buildEvent(entry, slot) {
+    if (!entry) {
+      if (AFTERNOON.has(slot)) return `<div class="cal-free">${t('schedule.free')}</div>`;
+      return '';
+    }
+    if (entry === 'prayer') {
+      return `<div class="cal-free">🕌 ${t('schedule.prayer.note')}</div>`;
+    }
+    const s = SUBJ[entry.subj];
+    if (!s) return '';
+    const name = t(s.key);
+    return `<div class="cal-event" style="background:${s.bg};border-color:${s.color};">
+      <div class="cal-event-subj"><span class="cal-dot" style="background:${s.color}"></span>${name}</div>
+      <div class="cal-event-teacher">${entry.teacher || ''}</div>
+    </div>`;
+  }
+
+  // ══════════════════════════════════════════════
+  //  PRINT — only the calendar
+  // ══════════════════════════════════════════════
+  function printSchedule() { window.print(); }
+
+  // ══════════════════════════════════════════════
+  //  i18n: re-render calendar on language change
+  // ══════════════════════════════════════════════
+  document.addEventListener('langChanged', function() {
+    // Update static labels driven by JS
+    if (curLevel)  selectLevel(curLevel);
+    if (curClass) selectClass(curClass);
+  });
+
+  // Reveal for level cards
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.querySelectorAll('#levelStep .reveal').forEach(el => el.classList.add('visible'));
+  }));
+  </script>
+</body>
+</html>

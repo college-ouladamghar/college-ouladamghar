@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الأخبار | ثانوية ولاد أمغار</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <style>
+    /* News detail modal */
+    .news-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, .5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .news-modal.open {
+      display: flex;
+      animation: fadeIn .25s ease;
+    }
+
+    .news-modal-inner {
+      background: var(--c-surface);
+      border-radius: var(--r-lg);
+      max-width: 720px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 2.5rem;
+      position: relative;
+    }
+
+    .news-modal-close {
+      position: sticky;
+      top: 0;
+      float: inline-end;
+      background: var(--c-bg);
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--c-muted);
+    }
+
+    .news-modal-content h1 {
+      font-size: 1.6rem;
+      margin-bottom: .5rem;
+    }
+
+    .news-modal-content p {
+      line-height: 1.9;
+    }
+
+    .news-modal-content h2 {
+      font-size: 1.2rem;
+      margin: 1.5rem 0 .5rem;
+    }
+
+    .news-modal-content blockquote {
+      border-inline-start: 3px solid var(--c-accent);
+      padding-inline-start: 1rem;
+      color: var(--c-muted);
+      font-style: italic;
+      margin: 1.5rem 0;
+    }
+
+    .news-modal-content ul {
+      padding-inline-start: 1.5rem;
+      margin: .75rem 0;
+    }
+
+    .news-modal-content li {
+      margin-bottom: .4rem;
+    }
+
+    .news-modal-date {
+      font-family: var(--f-ui);
+      font-size: .8rem;
+      color: var(--c-accent2);
+      margin-bottom: 1.25rem;
+    }
+  </style>
+</head>
+
+<body data-lang="ar">
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <span class="logo-ar">ثانوية ولاد أمغار</span>
+        <span class="logo-divider">|</span>
+        <span class="logo-fr">Al Nour</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../index.html" data-i18n="nav.home">الرئيسية</a></li>
+        <li><a href="about.html" data-i18n="nav.about">عن المدرسة</a></li>
+        <li><a href="gallery.html" data-i18n="nav.gallery">معرض الصور</a></li>
+        <li><a href="news.html" data-i18n="nav.news">الأخبار</a></li>
+        <li><a href="schedule.html" data-i18n="nav.schedule">التوقيت</a></li>
+        <li><a href="schedule.html" data-i18n="nav.schedule">التوقيت</a>
+          <a href="contact.html" data-i18n="nav.contact">اتصل بنا</a>
+        </li>
+      </ul>
+      <div class="nav-actions">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="ar">ع</button>
+          <button class="lang-btn" data-lang="fr">Fr</button>
+          <button class="lang-btn" data-lang="en">En</button>
+        </div>
+        <button class="burger" id="burger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-inner animate-in">
+        <span class="section-tag" data-i18n="news.page.tag">الأخبار والمستجدات</span>
+        <h1 data-i18n="news.page.title">ما الجديد في ثانوية ولاد أمغار</h1>
+        <p data-i18n="news.page.subtitle">ابقَ على اطلاع بآخر أخبار مدرستنا وفعالياتها</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section news-full">
+    <div class="container">
+      <div class="news-filters reveal">
+        <button class="filter-btn active" data-filter="all">الكل</button>
+        <button class="filter-btn" data-filter="events">فعاليات</button>
+        <button class="filter-btn" data-filter="academic">أكاديمي</button>
+        <button class="filter-btn" data-filter="sports">رياضة</button>
+        <button class="filter-btn" data-filter="admin">إداري</button>
+      </div>
+      <div class="news-grid" id="newsGridFull">
+        <div class="news-loading">جارٍ التحميل…</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- News detail modal -->
+  <div class="news-modal" id="newsModal">
+    <div class="news-modal-inner">
+      <button class="news-modal-close" id="newsModalClose">✕</button>
+      <div class="news-modal-content" id="newsModalContent"></div>
+    </div>
+  </div>
+
+  <!-- 
+    ╔══════════════════════════════════════════════╗
+    ║  HOW TO ADD NEWS (Markdown-based)            ║
+    ╠══════════════════════════════════════════════╣
+    ║  1. Create a .md file in /content/news/      ║
+    ║     e.g. my-event-2025.ar.md                 ║
+    ║  2. Add an entry to /content/news/index.json ║
+    ║     with slug, date, title_ar/fr/en,         ║
+    ║     excerpt_ar/fr/en, category, emoji        ║
+    ║  3. The site will automatically display it   ║
+    ╚══════════════════════════════════════════════╝
+  -->
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <p class="footer-logo">ثانوية ولاد أمغار</p>
+        <p class="footer-tagline" data-i18n="footer.tagline">نور العلم يضيء الطريق</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html" data-i18n="nav.home">الرئيسية</a>
+        <a href="about.html" data-i18n="nav.about">عن المدرسة</a>
+        <a href="gallery.html" data-i18n="nav.gallery">معرض الصور</a>
+        <a href="news.html" data-i18n="nav.news">الأخبار</a>
+        <a href="schedule.html" data-i18n="nav.schedule">التوقيت</a>
+        <a href="contact.html" data-i18n="nav.contact">اتصل بنا</a>
+      </div>
+      <p class="footer-copy">© 2025 ثانوية ولاد أمغار — المغرب</p>
+    </div>
+  </footer>
+
+  <!-- Marked.js for Markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="../js/i18n.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/news-loader.js"></script>
+  <script>
+    // News modal
+    const modal = document.getElementById('newsModal');
+    const modalContent = document.getElementById('newsModalContent');
+    const modalClose = document.getElementById('newsModalClose');
+
+    async function openNewsModal(slug) {
+      const lang = window.i18n ? window.i18n.getLang() : 'ar';
+      const url = `../content/news/${slug}.${lang}.md`;
+      let md = '';
+      try {
+        const res = await fetch(url);
+        if (res.ok) md = await res.text();
+        else throw new Error('Not found');
+      } catch {
+        // Fallback to ar
+        try {
+          const res2 = await fetch(`../content/news/${slug}.ar.md`);
+          if (res2.ok) md = await res2.text();
+          else md = '### ' + (window.i18n ? window.i18n.t('news.readmore') : 'اقرأ المزيد');
+        } catch {
+          md = '### محتوى قريباً…';
+        }
+      }
+      if (window.marked) {
+        modalContent.innerHTML = window.marked.parse(md);
+      } else {
+        modalContent.innerHTML = '<pre>' + md + '</pre>';
+      }
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    if (modalClose) {
+      modalClose.addEventListener('click', () => {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    }
+    modal.addEventListener('click', e => {
+      if (e.target === modal) { modal.classList.remove('open'); document.body.style.overflow = ''; }
+    });
+
+    // Override read more links to open modal
+    document.addEventListener('click', e => {
+      const link = e.target.closest('a[href*="#"]');
+      if (link && link.href.includes('news.html#')) {
+        e.preventDefault();
+        const slug = link.href.split('#')[1];
+        openNewsModal(slug);
+      }
+    });
+
+    // Handle hash on load
+    if (window.location.hash) {
+      const slug = window.location.hash.slice(1);
+      setTimeout(() => openNewsModal(slug), 600);
+    }
+  </script>
+</body>
+
+</html>
